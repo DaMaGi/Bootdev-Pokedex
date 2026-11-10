@@ -4,12 +4,13 @@ import { commandHelp } from "./command_help.js";
 import { commandMap } from "./command_map.js";
 import { PokeAPI } from "./pokeapi.js";
 import { commandMapBack } from "./command_mapb.js";
+import { exploreArea } from "./command_explore.js";
 
 export type State = {
     readLine: Interface;
     pokeAPI: PokeAPI;
-    prevLocationsURL: string;
-    nextLocationsURL: string;
+    prevLocationsURL: string | null;
+    nextLocationsURL: string | null;
     commands: Record<string, CLICommand>;
 }
 
@@ -17,7 +18,7 @@ export type State = {
 export type CLICommand = {
   name: string;
   description: string;
-  callback: (state: State) => Promise<void>;
+  callback: (state: State, ...args: string[]) => Promise<void>;
 };
 
 
@@ -29,8 +30,8 @@ export function initState(): State {
             prompt: "Pokedex > ",
         }),
         pokeAPI: new PokeAPI(),
-        prevLocationsURL: "",
-        nextLocationsURL: "",
+        prevLocationsURL: null,
+        nextLocationsURL: null,
         commands: {
             exit: {
                 name: "exit",
@@ -51,6 +52,11 @@ export function initState(): State {
                 name: "mapb",
                 description: "Display previous Pokedex map locations",
                 callback: commandMapBack
+            },
+            explore: {
+                name: "explore",
+                description: "Display Pokemon found in target area. Type 'explore {area_name | area_id}'",
+                callback: exploreArea
             }
         }
 

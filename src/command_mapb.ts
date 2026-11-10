@@ -4,8 +4,13 @@ import { State } from "./state.js";
 
 
 export async function commandMapBack(state: State): Promise<void> {
-    const locations = await state.pokeAPI.fetchLocations(state.prevLocationsURL ?? null);
+    if (!state.prevLocationsURL) {
+        console.log("You're already at the first page.");
+        return;
+    }
+
+    const locations = await state.pokeAPI.fetchLocations(state.prevLocationsURL);
     locations.results.map((loc) => { console.log(`${loc.name}`) });
-    state.prevLocationsURL = locations.previous ?? "";
-    state.nextLocationsURL = locations.next ?? "";
+    state.prevLocationsURL = locations.previous;
+    state.nextLocationsURL = locations.next;
 }
