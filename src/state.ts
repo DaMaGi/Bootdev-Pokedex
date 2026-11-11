@@ -5,12 +5,15 @@ import { commandMap } from "./command_map.js";
 import { PokeAPI } from "./pokeapi.js";
 import { commandMapBack } from "./command_mapb.js";
 import { exploreArea } from "./command_explore.js";
+import { commandCatch } from "./command_catch.js";
+import type { Pokemon } from "./pokeapi.js";
 
 export type State = {
     readLine: Interface;
     pokeAPI: PokeAPI;
     prevLocationsURL: string | null;
     nextLocationsURL: string | null;
+    pokedex: Record<string, Pokemon>;
     commands: Record<string, CLICommand>;
 }
 
@@ -32,6 +35,7 @@ export function initState(): State {
         pokeAPI: new PokeAPI(),
         prevLocationsURL: null,
         nextLocationsURL: null,
+        pokedex: {},
         commands: {
             exit: {
                 name: "exit",
@@ -57,6 +61,11 @@ export function initState(): State {
                 name: "explore",
                 description: "Display Pokemon found in target area. Type 'explore {area_name | area_id}'",
                 callback: exploreArea
+            },
+            catch: {
+                name: "catch",
+                description: "Attempt to catch a Pokemon. Type 'catch {`pokemon_name | pokemon_id}",
+                callback: commandCatch
             }
         }
 

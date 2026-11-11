@@ -18,6 +18,12 @@ export type Location = {
     pokemon_encounters: { pokemon: { name: string, url: string } }[]
 };
 
+export type Pokemon = {
+    id: number,
+    name: string,
+    base_experience: number,
+};
+
 
 export class PokeAPI {
     constructor(interval: number = 300_000) {
@@ -77,6 +83,34 @@ export class PokeAPI {
         }
 
         return loc;
+    }
+
+    async fetchPokemon(pokemon: Pokemon["id"] | Pokemon["name"]) {
+        const fullURL = PokeAPI.baseURL + `/pokemon/${pokemon}`;
+        const isInCache = this.cache.get<Pokemon>(fullURL);
+
+        let poke: Pokemon;
+
+        if (isInCache !== undefined) poke = isInCache;
+
+        else {
+            try {
+                poke = await fetch(fullURL, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json());
+                this.cache.add(fullURL, poke);
+            }
+            catch (error) {
+                console.error("Error fetching Pokemon info: ", error);
+                throw error;
+            };
+        }
+
+        return poke;
     }
 
     closeCache() {

@@ -1,7 +1,7 @@
 import { State } from "./state.js";
 
 export function cleanInput(input: string): string[] {
-    return input.trim().toLowerCase().split(/[\s]/).filter(Boolean) || [];
+    return input.trim().toLowerCase().split(/[\s\.,;!?:]+/).filter(Boolean) || [];
 }
 
 export async function startREPL(state: State): Promise<void> {
@@ -21,8 +21,8 @@ export async function startREPL(state: State): Promise<void> {
                     break;
                 }
                 catch (error) {
-                    console.log("Your last command could not be completed. Try again later.");
-                    console.error(`Error executing the command ${commands[command].name}:\n${error}`);
+                    console.log(`Can't compute the command: ${commands[command].name}.`);
+                    console.error(`Error executing the command :\n${error}`);
                 }
             }
         }
