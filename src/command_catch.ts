@@ -1,10 +1,10 @@
 import type { State } from "./state.js";
 
 
-const minChanceToCatch = 0.125;
+const minChanceToCatch = 0.2;
 
 
-export async function commandCatch(state: State, pokemon: string | number): Promise<void> {
+export async function commandCatch(state: State, pokemon: string): Promise<void> {
     const poke = await state.pokeAPI.fetchPokemon(pokemon);
     if (poke.name === undefined) {
         console.log(`No Pokemon with the name ${pokemon} was found.`);
@@ -16,7 +16,7 @@ export async function commandCatch(state: State, pokemon: string | number): Prom
     }
     console.log(`Throwing a Pokeball at ${poke.name}...`);
     if (isCaught(poke.base_experience)) {
-        console.log(`${poke.name} was caught!`);
+        console.log(`${poke.name} was caught!\nYou may now inspect it using the "inspect" command.`);
         state.pokedex[poke.name] = poke;
     }
     else {

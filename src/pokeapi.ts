@@ -15,13 +15,18 @@ export type Location = {
     encounter_method_rates: [],
     location: Object,
     names: [],
-    pokemon_encounters: { pokemon: { name: string, url: string } }[]
+    pokemon_encounters: { pokemon: { name: string, url: string } } []
 };
 
 export type Pokemon = {
     id: number,
     name: string,
     base_experience: number,
+    height: number,
+    weight: number,
+    abilities: {ability: {name: string}}[],
+    stats: {stat: {name: string}, effort: number, base_stat: number} [],
+    types: {type: {name: string}} []
 };
 
 

@@ -7,6 +7,8 @@ import { commandMapBack } from "./command_mapb.js";
 import { exploreArea } from "./command_explore.js";
 import { commandCatch } from "./command_catch.js";
 import type { Pokemon } from "./pokeapi.js";
+import { inspectPokemon } from "./command_inspect.js";
+import { pokedexShow } from "./command_pokedex_show.js";
 
 export type State = {
     readLine: Interface;
@@ -59,13 +61,23 @@ export function initState(): State {
             },
             explore: {
                 name: "explore",
-                description: "Display Pokemon found in target area. Type 'explore {area_name | area_id}'",
+                description: "Display Pokemon found in target area. Type 'explore {area_name}'",
                 callback: exploreArea
             },
             catch: {
                 name: "catch",
-                description: "Attempt to catch a Pokemon. Type 'catch {`pokemon_name | pokemon_id}",
+                description: "Attempt to catch a Pokemon. Type 'catch {pokemon_name}",
                 callback: commandCatch
+            },
+            inspect: {
+                name: "inspect",
+                description: "Inspect any Pokemon in your Pokedex. Type 'inspect {pokemon_name}",
+                callback: inspectPokemon
+            },
+            pokedex: {
+                name: "pokedex",
+                description: "Show name of every Pokemon in your Pokedex",
+                callback: pokedexShow
             }
         }
 
